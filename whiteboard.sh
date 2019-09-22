@@ -1,6 +1,7 @@
 #!/bin/bash
-FILES="./posts/*.md"
+FILES="./_posts/*.md"
 PUBLIC_DIR="public"
+POST_CSS="../_styles/post.css"
 links=()
 
 mkdir -p $PUBLIC_DIR
@@ -13,19 +14,23 @@ generate_new_file_name () {
 
 generate_html () {
   local file
+  local metadata
+  local date
+  local title
+  local new_file_name
+
   for file in $FILES
   do
-    local metadata=$(pandoc --template=metadata.pandoc-tpl $file)
-    local date=$(echo -ne $metadata | jq -r .date)
-    local title=$(echo -ne $metadata | jq -r .title)
-    local new_file_name=$(generate_new_file_name $file $date)
+    metadata=$(pandoc --template=metadata.pandoc-tpl "$file")
+    date=$(echo -ne "$metadata" | jq -r .date)
+    title=$(echo -ne "$metadata" | jq -r .title)
+    new_file_name=$(generate_new_file_name "$file" "$date")
 
     echo "Processing $file -> ./$PUBLIC_DIR/$new_file_name"
 
-    pandoc --to=html5 --standalone --output=./$PUBLIC_DIR/$new_file_name $file
+    pandoc --to=html5 --standalone --css=$POST_CSS --output=./$PUBLIC_DIR/"$new_file_name" "$file"
 
     links+=( "\n<li><a href=\"./$new_file_name\">$title</a></li>" )
-
   done
 }
 
@@ -37,7 +42,7 @@ generate_index () {
   echo "<ul>" > $index
   echo -ne "${links[@]}" | sort -r >> $index
   echo "</ul>" >> $index
-  pandoc --to=html5 --standalone --metadata pagetitle="Whiteboard" --output=$index $index
+  pandoc --to=html5 --standalone --metadata title="Thomas Countz" --metadata pagetitle="Thomas Countz" --output=$index $index
 }
 
 generate_html
