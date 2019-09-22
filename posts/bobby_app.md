@@ -1,9 +1,9 @@
 ---
-title: Bobby
-date: 2019-09-21
+title: Hello World
+date: 2019-08-30
 author: Thomas Countz
 ---
 
-# Bobby
+# Hello World
 
-Bobby was built for me. I love using the bus stop codes in NYC. I always text the number before I leave the house, but I wanted a better UI.
+I've wanted this for a _while_ and here it *is*:  [link](www.google.com).
