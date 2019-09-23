@@ -11,7 +11,7 @@ mkdir -p $PUBLIC
 generate_new_file_name () {
   local filename=${1##*/}
   local basename=${filename%.*}
-  echo "$2_$basename.html"
+  echo "$basename.html"
 }
 
 generate_html () {
@@ -24,9 +24,8 @@ generate_html () {
   for file in $POSTS
   do
     metadata=$(pandoc --template=$METADATA_TEMPLATE "$file")
-    date=$(echo -ne "$metadata" | jq -r .date)
     title=$(echo -ne "$metadata" | jq -r .title)
-    new_file_name=$(generate_new_file_name "$file" "$date")
+    new_file_name=$(generate_new_file_name "$file")
 
     echo "Processing $file -> ./$PUBLIC/$new_file_name"
 
