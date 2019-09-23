@@ -1,10 +1,12 @@
 #!/bin/bash
-FILES="./_posts/*.md"
-PUBLIC_DIR="public"
-POST_CSS="../_styles/post.css"
+POSTS="./_posts/*.md"
+PUBLIC="public"
+METADATA_TEMPLATE="metadata.pandoc-tpl"
+POST_TEMPLATE="post.pandoc-tpl"
+INDEX_TEMPLATE="index.pandoc-tpl"
 links=()
 
-mkdir -p $PUBLIC_DIR
+mkdir -p $PUBLIC
 
 generate_new_file_name () {
   local filename=${1##*/}
@@ -19,30 +21,30 @@ generate_html () {
   local title
   local new_file_name
 
-  for file in $FILES
+  for file in $POSTS
   do
-    metadata=$(pandoc --template=metadata.pandoc-tpl "$file")
+    metadata=$(pandoc --template=$METADATA_TEMPLATE "$file")
     date=$(echo -ne "$metadata" | jq -r .date)
     title=$(echo -ne "$metadata" | jq -r .title)
     new_file_name=$(generate_new_file_name "$file" "$date")
 
-    echo "Processing $file -> ./$PUBLIC_DIR/$new_file_name"
+    echo "Processing $file -> ./$PUBLIC/$new_file_name"
 
-    pandoc --to=html5 --standalone --css=$POST_CSS --output=./$PUBLIC_DIR/"$new_file_name" "$file"
+    pandoc --to=html5 --standalone --template=$POST_TEMPLATE --output=./$PUBLIC/"$new_file_name" "$file"
 
     links+=( "\n<li><a href=\"./$new_file_name\">$title</a></li>" )
   done
 }
 
 generate_index () {
-  local index="./$PUBLIC_DIR/index.html"
+  local index="./$PUBLIC/index.html"
   touch $index
   echo "Processing $index"
 
   echo "<ul>" > $index
   echo -ne "${links[@]}" | sort -r >> $index
   echo "</ul>" >> $index
-  pandoc --to=html5 --standalone --metadata title="Thomas Countz" --metadata pagetitle="Thomas Countz" --output=$index $index
+  pandoc --to=html5 --standalone --metadata title="Thomas Countz" --template=$INDEX_TEMPLATE --output=$index $index
 }
 
 generate_html
