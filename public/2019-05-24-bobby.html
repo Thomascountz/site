@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+<meta name="author" content="Thomas Countz" />
+
+
+
+<title>Bobby</title>
+
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+</style>
+
+<style>
+@import url(https://cdn.jsdelivr.net/gh/tonsky/FiraCode@1.207/distr/fira_code.css);body,html{height:100%;width:100%;margin:0;padding:0;left:0;top:0;font-size:100%}*{font-family:"Fira Code",monospace;color:#333447;line-height:1.5}h1{font-size:2.5rem}h2{font-size:2rem}h3{font-size:1.375rem}h4{font-size:1.125rem}h5{font-size:1rem}h6{font-size:.875rem}p{font-size:1.125rem;line-height:1.8}.font-light{font-weight:300}.font-regular{font-weight:400}.font-heavy{font-weight:700}.left{text-align:left}.right{text-align:right}.center{text-align:center;margin-left:auto;margin-right:auto}.justify{text-align:justify}img{max-width:100%}.container{width:90%;margin-left:auto;margin-right:auto}.row{position:relative;width:100%}.row [class^=col]{float:left;margin:.5rem 2%;min-height:.125rem}.col-1,.col-10,.col-11,.col-12,.col-2,.col-3,.col-4,.col-5,.col-6,.col-7,.col-8,.col-9{width:96%}.col-1-sm{width:4.33%}.col-2-sm{width:12.66%}.col-3-sm{width:21%}.col-4-sm{width:29.33%}.col-5-sm{width:37.66%}.col-6-sm{width:46%}.col-7-sm{width:54.33%}.col-8-sm{width:62.66%}.col-9-sm{width:71%}.col-10-sm{width:79.33%}.col-11-sm{width:87.66%}.col-12-sm{width:96%}.row::after{content:"";display:table;clear:both}.hidden-sm{display:none}@media only screen and (min-width:33.75em){.container{width:80%}}@media only screen and (min-width:45em){.col-1{width:4.33%}.col-2{width:12.66%}.col-3{width:21%}.col-4{width:29.33%}.col-5{width:37.66%}.col-6{width:46%}.col-7{width:54.33%}.col-8{width:62.66%}.col-9{width:71%}.col-10{width:79.33%}.col-11{width:87.66%}.col-12{width:96%}.hidden-sm{display:block}}@media only screen and (min-width:60em){.container{width:75%;max-width:60rem}}
+</style>
+
+<style>
+header{text-align:right}.home-link{font-size:3rem}code{padding:.2rem .5rem;margin:0 .2rem;white-space:nowrap;background:#f1f1f1;border:1px solid #e1e1e1;font-family:"Fira Code",monospace}pre>code{display:block;padding:1rem 1.5rem;white-space:pre}.sourceCode{overflow:auto}
+</style>
+
+
+<!--[if lt IE 9]>
+<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+<![endif]-->
+
+</head>
+
+<body>
+<div class="container">
+
+<header class="col-12">
+<h1 class="home-link"><a href="/">Thomas Countz </a></h1>
+</header>
+
+<div class="col-12 include-before">
+</div>
+
+<div class="col-12">
+<h1 class="title">Bobby</h1>
+<h2 class="subtitle">Bobby wants you to take back your communte in NYC.</h2>
+</div>
+
+<div class="col-12">
+<h1 id="the-tldr">The tl;dr</h1>
+<div class="row">
+<div class="col-2">
+<img src="./assets/images/bobby/logo.svg" />
+</div>
+<div class="col-10">
+<a href="https://bobby-bus.herokuapp.com">Bobby</a> is a mobile-first Rails app that uses MTA’s real-time bus tracking API to tell users when the bus will arrive at their stop. Instead of using GPS, WiFi, or Cell Towers to pinpoint a user’s location, users manually enter in the bus stop code printed at every MTA bus stop.
+</div>
+</div>
+<h1 id="the-itch">The Itch</h1>
+<div class="row">
+<div class="col-8">
+<p>The MTA had recently released an <a href="http://www.mta.info/press-release/mta-headquarters/mta-launches-test-version-system-wide-%E2%80%98mymta%E2%80%99-app-and-new-responsive">Official MTA App</a>, but unfortunately, like most things MTA, it was slow and unreliable. In my pursuit for something better, I resorted to reading the paper bus schedules posted on bus stop pole boxes. Printed alongside the timetables, are instructions for how to use MTA’s real-time bus tracking service via SMS. You text the bus stop code to 551-123, and it quickly texts you back real-time data!</p>
+<p>Not only was this service the best way that I’ve found to get real-time bus data, I found the idea of these little secret codes, fascinating.</p>
+</div>
+<div class="col-4">
+<p><img src="./assets/images/bobby/bus-stop-box.svg" /></p>
+</div>
+</div>
+<h1 id="the-product">The Product</h1>
+<p>I decided that a real-time bus tracking webapp was product that I wanted to see exist in this World.</p>
+<p>I’d call it Bobby, and it would be my opportunity to experiment with the product ownership research I had been doing. Some of that research included listening to Justin Searls’ talk, <a href="http://blog.testdouble.com/posts/2019-05-08-the-selfish-programmer">The Selfish Programmer</a>, which is about how to approach solo work differently than the way we approach our work, at work—which is often on teams. It caused me to reflect on how I often get in my own way when I have an idea for a new project. I wrote about this a bit in my blog post, <a href="./2019-05-29-the-burden-of-self-imposed-bureaucracy.html">The Burden of Self Imposed Bureaucracy</a>.</p>
+<p>I was also inspired by reading <a href="https://basecamp.com/books/calm">It Doesn’t Have to be Crazy at Work</a> by DHH and Jason Fried at Basecamp. In their book, they present their ideas about how to run a better—<em>calmer</em>—business. Even though I wasn’t going into business, a lot of what they wrote about complimented product ownership and healthy working habits, in general.</p>
+<h1 id="the-design">The Design</h1>
+<p><img src="./assets/images/bobby/colors.svg" /></p>
+<p>Even though it’s a webapp, it was important that Bobby be mobile-first. This meant that the user experience was designed to be similar to that of other mobile-first/native applications.</p>
+<div class="row">
+<div class="col-4">
+<img src="./assets/images/bobby/logo-v1.svg"/>
+</div>
+<div class="col-4">
+<img src="./assets/images/bobby/logo-v2.svg"/>
+</div>
+<div class="col-4">
+<img src="./assets/images/bobby/logo.svg"/>
+</div>
+</div>
+<p>For Bobby, this manifested as large buttons, big fonts, and, of course, spawning the correct mobile keyboard.</p>
+<div class="row">
+<div class="col-6">
+<img src="./assets/images/bobby/browser-testing-iphone.svg"/>
+</div>
+<div class="col-6">
+<img src="./assets/images/bobby/mockup-iphone.svg"/>
+</div>
+</div>
+<h1 id="the-technology">The Technology</h1>
+<p>As of version 0.0.2, Bobby is a <a href="https://rubyonrails.org/">Ruby on Rails</a> app deployed on <a href="https://heroku.com/">Heroku</a>. When a user enters a bus stop code, Bobby sends a request to the <a href="https://en.wikipedia.org/wiki/MTA_Bus_Time">MTA Bus Time</a> JSON API. After parsing the response, Bobby displays the results in a human-readable format.</p>
+<p>Later versions of Bobby utilize <a href="https://stimulusjs.org/">Stimulus</a> for font-end validations and leverage browser caching to remember users’ recent and favorite bus stop codes.</p>
+<h1 id="thoughts">Thoughts</h1>
+<p>As an experiment, Bobby is the first <a href="./2019-05-23-innocent-apps.html">Innocent App</a> I’ve built in an effort to refine how I approach bringing my ideas to life. Even though it’s not driven by the same motives as most real products, building Bobby gave me the opportunity to own something real—from design to development and from branding to user-testing.</p>
+<p>The approach of using bus stop codes, rather than GPS, is intentional. Bus stop codes are an interesting analog solution to identifying someone’s location. Forcing a user to have a less-than convenient experience is part of the experiment of Bobby: how can we make technology simpler and put users back into their environment? The experience of finding bus stop codes on bus stop signs is fun for me; it’s a melding of old and new. Besides, what else would I do while waiting for a bus, check Twitter?</p>
+</div>
+
+<div class="col-12 include-after">
+</div>
+
+</div>
+</body>
+</html>
+
