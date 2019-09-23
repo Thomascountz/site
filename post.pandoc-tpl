@@ -37,7 +37,7 @@ $endif$
 </style>
 
 <style>
-header{text-align:right}.home-link{font-size:3rem}code{padding:.2rem .5rem;margin:0 .2rem;white-space:nowrap;background:#f1f1f1;border:1px solid #e1e1e1;font-family:"Fira Code",monospace}pre>code{display:block;padding:1rem 1.5rem;white-space:pre}.sourceCode{overflow:auto}
+header{text-align:right}.home-link{font-size:3rem}code{padding:.2rem .5rem;margin:0 .2rem;white-space:pre-wrap;background:#f1f1f1;border:1px solid #e1e1e1;font-family:"Fira Code",monospace}pre>code{display:block;padding:1rem 1.5rem;white-space:pre-wrap}.sourceCode{overflow:auto}
 </style>
 
 $for(css)$
