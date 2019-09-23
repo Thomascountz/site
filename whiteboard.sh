@@ -1,12 +1,18 @@
 #!/bin/bash
 POSTS="./_posts/*.md"
+ASSETS="./_assets/"
 PUBLIC="public"
+PUBLIC_ASSETS=$PUBLIC/assets
 METADATA_TEMPLATE="metadata.pandoc-tpl"
 POST_TEMPLATE="post.pandoc-tpl"
 INDEX_TEMPLATE="index.pandoc-tpl"
 links=()
 
 mkdir -p $PUBLIC
+mkdir -p $PUBLIC_ASSETS
+
+echo "Copying assets"
+cp -r $ASSETS $PUBLIC_ASSETS
 
 generate_new_file_name () {
   local filename=${1##*/}
@@ -38,7 +44,7 @@ generate_html () {
 generate_index () {
   local index="./$PUBLIC/index.html"
   touch $index
-  echo "Processing $index"
+  echo "Generating $index"
 
   echo "<ul>" > $index
   echo -ne "${links[@]}" | sort -r >> $index
