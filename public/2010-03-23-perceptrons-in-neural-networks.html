@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+<meta name="author" content="Thomas Countz" />
+
+
+
+<title>Perceptrons in Neural Networks</title>
+
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+</style>
+
+<style>
+@import url(https://cdn.jsdelivr.net/gh/tonsky/FiraCode@1.207/distr/fira_code.css);body,html{height:100%;width:100%;margin:0;padding:0;left:0;top:0;font-size:100%}*{font-family:"Fira Code",monospace;color:#333447;line-height:1.5}h1{font-size:2.5rem}h2{font-size:2rem}h3{font-size:1.375rem}h4{font-size:1.125rem}h5{font-size:1rem}h6{font-size:.875rem}p{font-size:1.125rem;line-height:1.8}.font-light{font-weight:300}.font-regular{font-weight:400}.font-heavy{font-weight:700}.left{text-align:left}.right{text-align:right}.center{text-align:center;margin-left:auto;margin-right:auto}.justify{text-align:justify}img{max-width:100%}.container{width:90%;margin-left:auto;margin-right:auto}.row{position:relative;width:100%}.row [class^=col]{float:left;margin:.5rem 2%;min-height:.125rem}.col-1,.col-10,.col-11,.col-12,.col-2,.col-3,.col-4,.col-5,.col-6,.col-7,.col-8,.col-9{width:96%}.col-1-sm{width:4.33%}.col-2-sm{width:12.66%}.col-3-sm{width:21%}.col-4-sm{width:29.33%}.col-5-sm{width:37.66%}.col-6-sm{width:46%}.col-7-sm{width:54.33%}.col-8-sm{width:62.66%}.col-9-sm{width:71%}.col-10-sm{width:79.33%}.col-11-sm{width:87.66%}.col-12-sm{width:96%}.row::after{content:"";display:table;clear:both}.hidden-sm{display:none}@media only screen and (min-width:33.75em){.container{width:80%}}@media only screen and (min-width:45em){.col-1{width:4.33%}.col-2{width:12.66%}.col-3{width:21%}.col-4{width:29.33%}.col-5{width:37.66%}.col-6{width:46%}.col-7{width:54.33%}.col-8{width:62.66%}.col-9{width:71%}.col-10{width:79.33%}.col-11{width:87.66%}.col-12{width:96%}.hidden-sm{display:block}}@media only screen and (min-width:60em){.container{width:75%;max-width:60rem}}
+</style>
+
+<style>
+header{text-align:right}.home-link{font-size:3rem}code{padding:.2rem .5rem;margin:0 .2rem;white-space:pre-wrap;background:#f1f1f1;border:1px solid #e1e1e1;font-family:"Fira Code",monospace}pre>code{display:block;padding:1rem 1.5rem;white-space:pre-wrap}.sourceCode{overflow:auto}
+</style>
+
+
+<!--[if lt IE 9]>
+<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+<![endif]-->
+
+</head>
+
+<body>
+<div class="container">
+
+<header class="col-12">
+<h1 class="home-link"><a href="/">Thomas Countz </a></h1>
+</header>
+
+<div class="col-12 include-before">
+</div>
+
+<div class="col-12">
+<h1 class="title">Perceptrons in Neural Networks</h1>
+<h2 class="subtitle">Learning Machine Learning Journal 1</h2>
+</div>
+
+<div class="col-12">
+<p>Perceptrons are a type of artificial neuron that predates the sigmoid neuron. It appears that they were invented in 1957 by <a href="https://en.wikipedia.org/wiki/Frank_Rosenblatt">Frank Rosenblatt</a> at the Cornell Aeronautical Laboratory.</p>
+<p>The initial difference between sigmoids and perceptrons, as I understand it, is that perceptrons deal with binary inputs and outputs exclusively.</p>
+<p>Taken from <a href="http://michaelnielsen.org/">Michael Nielsen</a>’s <a href="http://neuralnetworksanddeeplearning.com/index.html">Neural Networks and Deep Learning</a> we can model a perceptron that has 3 inputs like this:</p>
+<figure>
+<img src="https://cdn-images-1.medium.com/max/2000/1*7XNrKHmizd9GN6RxhpG6uQ.jpeg" alt="" /><figcaption>Perceptron</figcaption>
+</figure>
+<p>A perceptron can have any number of inputs, but this one has three binary inputs x¹, x², and x³, and produces a binary output, which is called its <em>activation</em>.</p>
+<p>How can we take three binary inputs and produce one binary output? First, we assign each input a <em>weight</em>, loosely meaning the amount of influence the input has over the output.</p>
+<p>In the picture above, weights are illustrated by black arrows. We’ll call each weight w. Each input, x above has an associated weight: x¹ has a weight w¹, x² a weight of w², and x³, a weight of w³.</p>
+<p>To determine the perceptron’s activation, we take the <em>weighted sum</em> of each of the inputs <em>and then</em> determine if it is above or below a certain <em>threshold</em>, or <em>bias, </em>represented by b.</p>
+<p>The formula for perceptron neurons can can be expressed like this:</p>
+<figure>
+<img src="https://cdn-images-1.medium.com/max/2000/1*h7m4YL-MdtWfO_8Vw-71Ag.png" alt="" /><figcaption>http://neuralnetworksanddeeplearning.com/index.html</figcaption>
+</figure>
+<p>Let’s break this down.</p>
+<ul>
+<li><p>output is the output of our formula, which is called the <em>activation</em> of our perceptron.</p></li>
+<li><p>Both if branches start with the same ∑ formula which takes each input, x, multiplies it by its weight, w, and then add them all together. This is the <em>weighted sum, </em>in our case, x¹w¹ + x²w² + x³w³, which can also be, (and usually is), represented using dot product notation.</p></li>
+<li><p>If the <em>weighted sum</em> is less than or equal to our <em>threshold</em>, or <em>bias</em>, b, then our output will be 0</p></li>
+<li><p>If the <em>weighted sum</em> is greater than our <em>threshold</em>, or <em>bias</em>, b, then our output will be 1</p></li>
+</ul>
+<p>This formula is called a <a href="https://en.wikipedia.org/wiki/Heaviside_step_function">Heaviside Step function</a>, and it can be graphed like this:</p>
+<pre><code> f(x) = { x &lt;= b : 0 , x &gt; b : 1 }</code></pre>
+<p>Were x is our <em>weighted sum, </em>and b is our <em>bias</em>, 0, in this case.</p>
+<p><img src="https://cdn-images-1.medium.com/max/2000/1*anmMc9bDkCRBTbwVJk4j3w.png" /></p>
+<p>For any negative x, (input), our y, (output), is 0, and for any positive x, our y is 1.</p>
+<p>I want to record this graph, as simple as it is, because it will help demonstrate the differences between perceptrons and sigmoids, later.</p>
+<p><em>(EDIT 25.03.18)</em></p>
+<p>It’s more common to represent the perceptron math like this:</p>
+<figure>
+<img src="https://cdn-images-1.medium.com/max/2000/1*T_mQVKH0PKS97waJ-RkDYg.png" alt="" /><figcaption>https://en.wikipedia.org/wiki/Perceptron</figcaption>
+</figure>
+<ul>
+<li><p>The summation is represented using dot product notation.</p></li>
+<li><p>The “threshold” is moved to the other side of the equality and labeled b for “bias.”</p></li>
+<li><p>The summation and bias are added together and compared to to 0.</p></li>
+</ul>
+<p>This new way of comparing to 0, offers us a new way of thinking about these artificial neurons. We can think of the bias, now, like a predictor of how easily our neuron will <em>activate</em>, or produce 1 as an output. A neuron with a large biases will indicate that it will “fire” more easily than the same neuron with a smaller bias.</p>
+<p>Lastly, pseudocode might look something like this:</p>
+<pre><code>def perceptron(inputs, bias)
+
+ weighted_sum = sum {
+  for each input in inputs
+    input.value * input.weight
+  }
+
+  if weighted_sum &lt;= bias
+    return 0
+  if weighted_sum &gt; bias
+    return 1
+
+end</code></pre>
+<p>Phew! That was a lot, but now we can add more detail to our perceptron model:</p>
+<figure>
+<img src="https://cdn-images-1.medium.com/max/2000/1*LyDp1dru7psq3044D2AXsQ.png" alt="" /><figcaption>Perceptron Model</figcaption>
+</figure>
+<h2 id="irl-example">IRL Example</h2>
+<p>Inspired by the first pages of <a href="http://michaelnielsen.org/">Michael</a>’s book.</p>
+<p>My boyfriend and I want to know whether or not we should make a pizza for dinner. I’m going to rely on our perceptron formula to make a decision. In order to determine if we should make pizza, we’re going to check if we have all of the ingredients, if I’m in the mood for pizza, and if he’s in the mood for pizza.</p>
+<p>I really enjoy making pizza, but I hate shopping, so if we don’t have all the ingredients, I’ll only want to make pizza if I’m in the mood for it. If my boyfriend is hungry for pizza, I’ll only want pizza if I don’t have to go to the store, unless I’m also craving pizza.</p>
+<p>If, we have all of the ingredients and my boyfriend is in the mood for pizza, but I’m not, we can break down our problem thusly:</p>
+<pre><code>Decision:
+  Make pizza for dinner?
+
+Inputs:
+  x¹ = 1 # We have all of the ingredients.
+  x² = 0 # I&#39;m not in the mood for pizza.
+  x³ = 1 # My boyfriend is in the mood for pizza.
+
+Weights:
+  w¹ = 3 # Having the ingredients makes me willing to have pizza.
+  w² = 4 # If I want pizza, I really want pizza!
+  w³ = 2 # Him wanting pizza is the least of my concerns.
+
+Bias:
+  4</code></pre>
+<p>Let’s map it using our illustration!</p>
+<figure>
+<img src="https://cdn-images-1.medium.com/max/2000/1*m9mE1AYIFkveNar5HzSKog.png" alt="" /><figcaption>Pizza Perceptron</figcaption>
+</figure>
+<p>Each input represents a binary state of each scenario I’m considering, and each weight represents how important each yes-or-no answer is to my final decision. Let’s plug in the numbers.</p>
+<pre><code>(1*3) + (0*4) + (1*2) = 5 &lt;= 4 #=&gt; FALSE
+(1*3) + (0*4) + (1*2) = 5 &lt;= 4 #=&gt; TRUE = 1</code></pre>
+<p>It looks like pizza it is!</p>
+<p>Given our perceptron model, there are a few things we could do to affect our output.</p>
+<p>If we didn’t have control over out binary inputs, (let’s say they were objective states of being 1 or 0), we could still adjust the weight we give each input, and the bias. For our little pizza question, this is a fun experiment, and could maybe be analogous to how we, as humans, actually solve problems, given objective inputs! We are constantly adjusting the pros-and-cons and priorities we give each input before making a decision.</p>
+<p>If I’m not in the mood for pizza, could I still eat it? If yes, then maybe I can decrease the importance of that input. Or maybe, I hate pizza. Then, whether or not I’m in the mood for it should be weighted even higher when it comes to making the decision to have it for dinner or not!</p>
+<p>When looking at vanilla neural networks, (multilayer perceptrons), this balancing act is exactly what we’re asking the computer to do. We “train” a network by giving it inputs and expected outputs, and then we ask it to adjust the weights and biases in order to get closer to the expected output, i.e., how can you adjust the weights and biases to get this input, to equal this output?</p>
+<p>After we train our network, we then present it inputs it has never seen before. If it’s weights and biases have been calibrated well, it will hopefully begin outputting meaningful “decisions” that has been determined by patterns observed from the many many training examples we’ve presented it.</p>
+<p>And this is just the tip of the iceberg.</p>
+<p>This is my first journal entry of my dive into machine learning. I’ll list the resources that have gotten me this far, below. Feedback is greatly appreciated, if I’ve gotten something wrong, or taken a misstep, any guidance will be met with open arms!</p>
+<p>Thanks for Reading &lt;3</p>
+<h2 id="resources">Resources</h2>
+<ul>
+<li><p><a href="https://www.youtube.com/watch?v=aircAruvnKk&amp;t=6s">But what <em>is</em> a Neural Network? | Chapter 1, deep learning</a></p></li>
+<li><p><a href="https://www.youtube.com/watch?v=IHZwWFHWa-w">Gradient descent, how neural networks learn | Chapter 2, deep learning</a></p></li>
+<li><p><a href="https://www.youtube.com/watch?v=Ilg3gGewQ5U">What is backpropagation really doing? | Chapter 3, deep learning</a></p></li>
+<li><p><a href="https://www.youtube.com/watch?v=tIeHLnjs5U8">Backpropagation calculus | Appendix to deep learning chapter 3</a></p></li>
+<li><p><a href="http://neuralnetworksanddeeplearning.com/index.html">Neural Networks and Deep Learning</a> by <a href="http://michaelnielsen.org/">Michael Nielsen</a></p></li>
+<li><p><a href="https://appliedgo.net/perceptron/">Perceptrons — the most basic form of a neural network</a></p></li>
+<li><p><a href="https://en.wikipedia.org/wiki/Perceptron">Perceptron — Wikipedia</a></p></li>
+</ul>
+</div>
+
+<div class="col-12 include-after">
+</div>
+
+</div>
+</body>
+</html>
+
