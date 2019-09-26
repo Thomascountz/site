@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+<meta name="author" content="Thomas Countz" />
+
+
+
+<title>Perceptron Implementing AND | Part 1</title>
+
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+</style>
+
+<style>
+@import url(https://cdn.jsdelivr.net/gh/tonsky/FiraCode@1.207/distr/fira_code.css);body,html{height:100%;width:100%;margin:0;padding:0;left:0;top:0;font-size:100%}*{font-family:"Fira Code",monospace;color:#333447;line-height:1.5}h1{font-size:2.5rem}h2{font-size:2rem}h3{font-size:1.375rem}h4{font-size:1.125rem}h5{font-size:1rem}h6{font-size:.875rem}p{font-size:1.125rem;line-height:1.8}.font-light{font-weight:300}.font-regular{font-weight:400}.font-heavy{font-weight:700}.left{text-align:left}.right{text-align:right}.center{text-align:center;margin-left:auto;margin-right:auto}.justify{text-align:justify}img{max-width:100%}.container{width:90%;margin-left:auto;margin-right:auto}.row{position:relative;width:100%}.row [class^=col]{float:left;margin:.5rem 2%;min-height:.125rem}.col-1,.col-10,.col-11,.col-12,.col-2,.col-3,.col-4,.col-5,.col-6,.col-7,.col-8,.col-9{width:96%}.col-1-sm{width:4.33%}.col-2-sm{width:12.66%}.col-3-sm{width:21%}.col-4-sm{width:29.33%}.col-5-sm{width:37.66%}.col-6-sm{width:46%}.col-7-sm{width:54.33%}.col-8-sm{width:62.66%}.col-9-sm{width:71%}.col-10-sm{width:79.33%}.col-11-sm{width:87.66%}.col-12-sm{width:96%}.row::after{content:"";display:table;clear:both}.hidden-sm{display:none}@media only screen and (min-width:33.75em){.container{width:80%}}@media only screen and (min-width:45em){.col-1{width:4.33%}.col-2{width:12.66%}.col-3{width:21%}.col-4{width:29.33%}.col-5{width:37.66%}.col-6{width:46%}.col-7{width:54.33%}.col-8{width:62.66%}.col-9{width:71%}.col-10{width:79.33%}.col-11{width:87.66%}.col-12{width:96%}.hidden-sm{display:block}}@media only screen and (min-width:60em){.container{width:75%;max-width:60rem}}
+</style>
+
+<style>
+header{text-align:right}.home-link{font-size:3rem}code{padding:.2rem .5rem;margin:0 .2rem;white-space:pre-wrap;background:#f1f1f1;border:1px solid #e1e1e1;font-family:"Fira Code",monospace}pre>code{display:block;padding:1rem 1.5rem;white-space:pre-wrap}.sourceCode{overflow:auto}
+</style>
+
+
+<!--[if lt IE 9]>
+<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+<![endif]-->
+
+</head>
+
+<body>
+<div class="container">
+
+<header class="col-12">
+<h1 class="home-link"><a href="/">Thomas Countz </a></h1>
+</header>
+
+<div class="col-12 include-before">
+</div>
+
+<div class="col-12">
+<h1 class="title">Perceptron Implementing AND | Part 1</h1>
+<h2 class="subtitle">Learning Machine Learning Journal #2</h2>
+</div>
+
+<div class="col-12">
+<p>In <a href="./2018-03-23-perceptrons-in-neural-networks.html" >Learning Machine Learning Journal #1</a>, we got my feet wet learning about perceptrons. Inspired by <a href="http://michaelnielsen.org/" class="markup--anchor markup--p-anchor">Michael Nielsen</a>’s <a href="http://neuralnetworksanddeeplearning.com/index.html" class="markup--anchor markup--p-anchor">Neural Networks and Deep Learning</a> book, today, the goal is to expand on that knowledge by using the perceptron formula to mimic the behavior of a logical <code>AND</code>.</p>
+<hr />
+<p>As a programmer, I am familiar with logic operators like <code>AND</code>, <code>OR</code>, <code>XOR</code>. Well, as I’m learning about artificial neurons, it turns out that the math behind perceptrons, <a href="./2018-03-23-perceptrons-in-neural-networks.html" class="markup--anchor markup--p-anchor">see more here</a>, can be used to recreate the functionality of these binary operators!</p>
+<p>As a refresher, let’s look at the logic table for <code>AND</code>:</p>
+<pre class="graf"><code> A   B  | AND 
+--- --- |-----
+ 0   0  |  0
+ 0   1  |  0
+ 1   0  |  0
+ 1   1  |  1</code></pre>
+<h4 id="lets-break-it-down.">Let’s break it down.</h4>
+<p>To produce a logical <code>AND</code>, we want our function to output <code>1</code>, only when both inputs, <code>A</code>, and <code>B</code>, are also <code>1</code>. For every other case, our <code>AND</code> should output <code>0</code>.</p>
+<p>Let’s take a look at this using our perceptron model from <a href="./2018-03-23-perceptrons-in-neural-networks.html" class="markup--anchor markup--p-anchor">last time</a>, with a few updates:</p>
+<p>The equation we ended up with looks like this:</p>
+<figure>
+<img src="https://cdn-images-1.medium.com/max/800/1*T_mQVKH0PKS97waJ-RkDYg.png" class="graf-image" alt="" />
+<figcaption>
+<a href="https://en.wikipedia.org/wiki/Perceptron" class="markup--anchor markup--figure-anchor">https://en.wikipedia.org/wiki/Perceptron</a>
+</figcaption>
+</figure>
+<p>And when we insert our inputs and outputs into our model, it looks like this:</p>
+<figure>
+<img src="https://cdn-images-1.medium.com/max/1200/1*ISAFhD3s-nEkpuywceG7Cg.png" class="graf-image" alt="" />
+<figcaption>
+Logical AND with Perceptrons
+</figcaption>
+</figure>
+<p><em>Side note: This model of a perceptron is slightly different than the last one. Here, I’ve tried to model the weights and bias more clearly.</em></p>
+<p>All we’ve done so far, is plug our logic table into our perceptron model. All of our perceptrons are returning <code>0</code>, except for when both of our inputs are “activated,” i.e. when they are <code>1</code>.</p>
+<p>What is missing from our model, is the actual implementation detail; the weights and biases that would actually give us our desired output. Moreover, we have four different models to represent each state of our perceptron, when what we really want, is one!</p>
+<h4 id="so-the-question-becomes-how-do-we-represent-the-behavior-of-a-logical-and-i.e.-what-weights-and-biases-should-we-input-into-our-model-to-produce-the-desired-output">So the question becomes how do we represent the <em>behavior</em> of a logical <code>AND</code>, i.e., what <em>weights</em> and <em>biases</em> should we input into our model to produce the desired output?</h4>
+<figure>
+<img src="https://cdn-images-1.medium.com/max/800/1*0J193XBx1WolJacFwxa6Ug.png" class="graf-image" alt="" />
+<figcaption>
+What should our weights and bias be?
+</figcaption>
+</figure>
+<hr />
+<p><strong>The first thing to note is that our weights should be the same for both inputs,</strong> <code>A</code> <strong>and</strong> <code>B</code><strong>.</strong></p>
+<p>If we look back at our logic chart, we can begin to notice that the position of our input values does not affect our output.</p>
+<pre class="graf"><code> A   B  | AND 
+--- --- |-----
+ 0   0  |  0
+ 0   1  |  0
+ 1   0  |  0
+ 1   1  |  1</code></pre>
+<p>For any statement above, if you swap <code>A</code> and <code>B</code>, the <code>AND</code> logic still stands true.</p>
+<p><strong>The second thing to note is that our summation + bias,</strong> <code>w · x + b</code><strong>, should be negative, except when both A and B are equal to 1.</strong></p>
+<figure>
+<img src="https://cdn-images-1.medium.com/max/600/1*vTGew0ODt-weO-ceY3fu1A.jpeg" class="graf-image" alt="" />
+<figcaption>
+<a href="https://en.wikipedia.org/wiki/Perceptron" class="markup--anchor markup--figure-anchor">https://en.wikipedia.org/wiki/Perceptron</a>
+</figcaption>
+</figure>
+<p>If we take a look back at our perceptron formula, we can generalize that our neuron will return <code>1</code>, whenever our input is positive, <code>x &gt; 0</code>, and return <code>0</code>, otherwise, i.e., when the input is negative or <code>0</code>.</p>
+<p><strong>Now, let’s work our way backwards.</strong></p>
+<p>If our inputs are <code>A = 1</code> and <code>B = 1</code>, we need a positive result from our summation, <code>w · x</code>; for any other inputs, we need a <code>0</code> or negative result:</p>
+<pre class="graf"><code>1w + 1w + b  &gt; 0
+0w + 1w + b &lt;= 0
+1w + 0w + b &lt;= 0
+0w + 0w + b &lt;= 0</code></pre>
+<p>We know that:</p>
+<ul>
+<li><span id="bde2"><code>x * 0 = 0</code></span></li>
+<li><span id="1593"><code>1x + 1x = 2x</code></span></li>
+<li><span id="aeda"><code>1x = x</code></span></li>
+</ul>
+<p>So we can simplify the above to:</p>
+<pre class="graf"><code>2w + b &gt; 0
+w + b &lt;= 0
+b &lt;= 0</code></pre>
+<p>Now we know that:</p>
+<ul>
+<li><span id="5553"><code>b</code> is <code>0</code> or negative</span></li>
+<li><span id="f1ef"><code>w + b</code> is <code>0</code> or negative</span></li>
+<li><span id="9cf3"><code>2w + b</code> is positive</span></li>
+</ul>
+<p>We also know that:</p>
+<ul>
+<li><span id="a452"><code>b</code> cannot be <code>0</code>. If <code>b = 0</code>, then <code>2w &gt; 0</code> and <code>w &lt;= 0</code>, which cannot be true.</span></li>
+<li><span id="5fcf"><code>w</code> must be positive. If <code>w</code> were negative, any <code>2w</code>, would also be negative. If <code>2w</code> were negative, adding another negative number, <code>b</code>, could never result in a positive number, so <code>2w + b &gt; 0</code> could never be true.</span></li>
+<li><span id="c4df">If <code>b</code> is negative and <code>w</code> is positive , <code>w — b = 0</code>, so that <code>w + b &lt;= 0</code>.</span></li>
+</ul>
+<h4 id="thats-it">That’s it!</h4>
+<p>We now know that we can set <code>b</code> to any negative number and both <code>w</code>’s to its opposite, and we can reproduce the behavior of <code>AND</code> by using a perceptron!</p>
+<p>For simplicity, let’s set<code>b = 1</code>, <code>w1 = -1</code>, and <code>w2 = -1</code></p>
+<figure>
+<img src="https://cdn-images-1.medium.com/max/800/1*VaMxhQ23gPq53GK-ozeKGQ.png" class="graf-image" alt="" />
+</figure>
+<h3 id="resources">Resources</h3>
+<ul>
+<li><span id="1277"><a href="http://toritris.weebly.com/perceptron-2-logical-operations.html" class="markup--anchor markup--li-anchor">http://toritris.weebly.com/perceptron-2-logical-operations.html</a></span></li>
+<li><span id="fa06"><a href="https://www.youtube.com/watch?v=aircAruvnKk&amp;t=6s" class="markup--anchor markup--li-anchor">But what <em>is</em> a Neural Network? | Chapter 1, deep learning</a></span></li>
+<li><span id="5d44"><a href="https://www.youtube.com/watch?v=IHZwWFHWa-w" class="markup--anchor markup--li-anchor">Gradient descent, how neural networks learn | Chapter 2, deep learning</a></span></li>
+<li><span id="a419"><a href="https://www.youtube.com/watch?v=Ilg3gGewQ5U" class="markup--anchor markup--li-anchor">What is backpropagation really doing? | Chapter 3, deep learning</a></span></li>
+<li><span id="e452"><a href="https://www.youtube.com/watch?v=tIeHLnjs5U8" class="markup--anchor markup--li-anchor">Backpropagation calculus | Appendix to deep learning chapter 3</a></span></li>
+<li><span id="bc91"><a href="http://neuralnetworksanddeeplearning.com/index.html" class="markup--anchor markup--li-anchor">Neural Networks and Deep Learning</a> by <a href="http://michaelnielsen.org/" class="markup--anchor markup--li-anchor">Michael Nielsen</a></span></li>
+<li><span id="8261"><a href="https://medium.com/@suffiyanz/getting-started-with-machine-learning-f15df1c283ea" class="markup--anchor markup--li-anchor">Getting Starting with Machine Learning</a></span></li>
+<li><span id="03dd"><a href="https://betterexplained.com/articles/linear-algebra-guide/" class="markup--anchor markup--li-anchor">And Intuitive Guide to Linear Algebra</a></span></li>
+<li><span id="52b6"><a href="https://appliedgo.net/perceptron/" class="markup--anchor markup--li-anchor">Perceptrons — the most basic form of a neural network</a></span></li>
+<li><span id="91a4"><a href="https://en.wikipedia.org/wiki/Perceptron" class="markup--anchor markup--li-anchor">Perceptron — Wikipedia</a></span></li>
+</ul>
+</div>
+
+<div class="col-12 include-after">
+</div>
+
+</div>
+</body>
+</html>
+
