@@ -40,6 +40,10 @@ $endfor$
 $body$
 </div>
 
+<footer>
+  <p style="font-size:1rem;margin-top:10rem;"> Built with whiteboard. <span style="color:red;">&lt3</span> </p>
+</footer>
+
 </body>
 </html>
 
