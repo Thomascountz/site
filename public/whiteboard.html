@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="$lang$" xml:lang="$lang$"$if(dir)$ dir="$dir$"$endif$>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
 <head>
 <meta charset="utf-8" />
 <meta name="generator" content="pandoc" />
@@ -9,31 +9,17 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
 <link rel="manifest" href="/favicon/site.webmanifest">
 
-$for(author-meta)$
-<meta name="author" content="$author-meta$" />
-$endfor$
+<meta name="author" content="Thomas Countz" />
 
-$if(date-meta)$
-<meta name="dcterms.date" content="$date-meta$" />
-$endif$
 
-$if(keywords)$
-<meta name="keywords" content="$for(keywords)$$keywords$$sep$, $endfor$" />
-$endif$
 
-<title>$if(title-prefix)$$title-prefix$ – $endif$$pagetitle$</title>
+<title>whiteboard.</title>
 
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 span.underline{text-decoration: underline;}
 div.column{display: inline-block; vertical-align: top; width: 50%;}
-$if(quotes)$
-q { quotes: "“" "”" "‘" "’"; }
-$endif$
-$if(highlighting-css)$
-$highlighting-css$
-$endif$
 </style>
 
 <style>
@@ -44,17 +30,11 @@ $endif$
 header{text-align:right}.home-link{font-size:3rem}code{padding:.2rem .5rem;margin:0 .2rem;white-space:pre-wrap;background:#f1f1f1;border:1px solid #e1e1e1;font-family:"Fira Code",monospace}pre>code{display:block;padding:1rem 1.5rem;white-space:pre-wrap}.sourceCode{overflow:auto}
 </style>
 
-$for(css)$
-<link rel="stylesheet" href="$css$" />
-$endfor$
 
 <!--[if lt IE 9]>
 <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
 <![endif]-->
 
-$for(header-includes)$
-$header-includes$
-$endfor$
 </head>
 
 <body>
@@ -65,35 +45,21 @@ $endfor$
 </header>
 
 <div class="col-12 include-before">
-$for(include-before)$
-$include-before$
-$endfor$
 </div>
 
-$if(title)$
 <div class="col-12">
-<h1 class="title">$title$</h1>
-$if(subtitle)$
-<h2 class="subtitle">$subtitle$</h2>
-$endif$
-$if(date)$
-<p class="date">$date$</p>
-$endif$
+<h1 class="title">whiteboard.</h1>
 </div>
-$endif$
 
 <div class="col-12">
-$body$
+<p><em>whiteboard.</em> is a work-in-progress static site generator that I built to support this blog. I haven’t shared it publicly yet, but if you’re interested in learning more, let me know!</p>
 </div>
 
 <div class="col-12 include-after">
-$for(include-after)$
-$include-after$
-$endfor$
 </div>
 
 <footer>
-  <p style="text-align:right;font-size:1rem;margin-top:10rem;"> Built with <a href="/whiteboard.html">whiteboard.</a> <span style="color:red;">&lt3</span> </p>
+  <p style="text-align:right;font-size:1rem;margin-top:10rem;"> Built with this. <span style="color:red;">&lt3</span> </p>
 </footer>
 </div>
 </body>
